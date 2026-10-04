@@ -35,7 +35,7 @@ O relatório HTML usa interface e rótulos das dimensões em inglês, porque o g
 
 Achado escolhido na Medição 1 (severidade Baixa): `AGENTS.md` dizia que todo arquivo `NNN-<nome>.md` de `docs/specs/` tem as sete seções, mas `001-revisao.md` e `001-teste-tres-dedos.md` seguem esse nome e não são specs. A consequência em uso não foi observada, porque não há sessão analisada.
 
-Reparo aplicado: uma frase acrescentada à seção "Onde ficam as specs" de `AGENTS.md`, dizendo que `NNN-revisao.md` e `NNN-teste-tres-dedos.md` são documentos de apoio da spec `NNN`, não são specs e não têm as sete seções. Nenhum outro arquivo foi alterado (`git diff` mostra só `AGENTS.md`, 1 linha adicionada e 1 removida). O reparo está sem commit.
+Reparo aplicado: uma frase acrescentada à seção "Onde ficam as specs" de `AGENTS.md`, dizendo que `NNN-revisao.md` e `NNN-teste-tres-dedos.md` são documentos de apoio da spec `NNN`, não são specs e não têm as sete seções. Nenhum outro arquivo foi alterado (`git diff` mostra só `AGENTS.md`, 1 linha adicionada e 1 removida). Commit: `e12fd8d`.
 
 | Medida | Medição 1 | Medição 2 |
 |---|---|---|
