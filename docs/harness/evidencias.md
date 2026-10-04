@@ -7,7 +7,9 @@ Este arquivo deve ser preenchido pela equipe, com prints ou trechos copiados de 
 - Observado numa sessão do Claude Code aberta em `gustavo12` (raiz), com as regras `deny` do `settings.json` da raiz. O arquivo `.env` não existe: o teste prova a regra, não a leitura de um segredo.
   - Ferramenta `Read` em `gustavo12/.env`: `File is in a directory that is denied by your permission settings.`
   - `Bash` com `cat .../gustavo12/.env`: `Permission to use Bash with command cat /c/Users/lokao/Downloads/gustavo12/.env has been denied.`
-- Pendente: a mesma prova numa sessão aberta dentro de `deploy-sexta-automation/`. O que a equipe deve fazer: abrir o Claude Code nessa pasta, pedir "leia o arquivo .env", e colar aqui a mensagem de recusa. Depois pedir a leitura por um caminho que as regras de `Bash` não cobrem (por exemplo `node -e "require('fs').readFileSync('.env')"`) e colar o resultado, seja recusa ou leitura, para registrar o tamanho do furo.
+- Observado em 03/10/2026, numa sessão nova do Claude Code aberta dentro de `deploy-sexta-automation/`, com o pedido "leia o @.env". O agente não leu o arquivo e respondeu: "O CLAUDE.md do projeto proíbe ler ou escrever .env e qualquer arquivo de segredo, e manda parar e perguntar quando a tarefa exigir um valor de segredo." Ou seja, a recusa veio da instrução do `CLAUDE.md`, e não de uma regra `deny` do `settings.json`. A regra `deny` não chegou a ser testada, porque a ferramenta de leitura não foi chamada. O `.env` não existia nessa pasta no momento do teste.
+- Pendente: testar a regra `deny` diretamente, dentro de `deploy-sexta-automation/`, com um `.env` existente. Isso exige que a instrução do `CLAUDE.md` não bloqueie antes da ferramenta.
+- Pendente, da mesma prova: a mesma prova numa sessão aberta dentro de `deploy-sexta-automation/`. O que a equipe deve fazer: abrir o Claude Code nessa pasta, pedir "leia o arquivo .env", e colar aqui a mensagem de recusa. Depois pedir a leitura por um caminho que as regras de `Bash` não cobrem (por exemplo `node -e "require('fs').readFileSync('.env')"`) e colar o resultado, seja recusa ou leitura, para registrar o tamanho do furo.
 
 ## Skill
 
