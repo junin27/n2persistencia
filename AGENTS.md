@@ -14,14 +14,16 @@ Se algum comando for necessário e não estiver aqui, pergunte.
 
 ## Stack e versões
 
-- Linguagem: TypeScript sobre Node.js.
-- Framework: Next.js (aplicação web).
-- Versões: pendente. Registrar aqui a versão do Node e do Next.js quando o projeto for criado.
-- Teste: pendente. A equipe ainda não escolheu o framework de teste.
+- Linguagem: TypeScript 5 sobre Node.js 22.15.1.
+- Framework: Next.js 16.3.8 com React 19.2.8 (aplicação web).
+- Teste: Jest 30 com Testing Library (ambiente jsdom).
+- Lint: ESLint 9 com eslint-config-next 16.3.8.
 
 ## Estrutura de pastas
 
 ```
+app/              páginas do Next.js
+__tests__/        testes Jest
 docs/
   specs/          specs das features (001-orquestracao-producao.md, ...)
   harness/        relatórios do Better Harness e evidências do harness
