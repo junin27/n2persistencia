@@ -8,7 +8,7 @@ Projeto: Deploy Sexta Automation (DSA), micro-SaaS que orquestra a produção de
 - Rodar: `npm run dev` (sobe em http://localhost:3000)
 - Build: `npm run build`
 - Lint: `npm run lint`
-- Testar: pendente. A equipe ainda não escolheu o framework de teste. Não invente um comando de teste.
+- Testar: `npm test` (Jest, com Testing Library). Os testes ficam em `__tests__/` e terminam em `.test.ts` ou `.test.tsx`.
 
 Se algum comando for necessário e não estiver aqui, pergunte.
 
