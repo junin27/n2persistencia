@@ -1,0 +1,87 @@
+{
+  "summary": {
+    "projectName": "deploy-sexta-automation",
+    "locale": "en",
+    "modelId": "agent-work-loop-v4",
+    "reportContractVersion": 25,
+    "overview": "Depois do reparo em AGENTS.md, a regra de nomes de docs/specs/ distingue spec de documento de apoio e o achado da primeira medição foi resolvido. Os fatos medidos pela ferramenta não mudaram: continuam 0 sessões elegíveis e nenhum comando de teste ou lint definido, então nada de comportamento foi observado.",
+    "dimensions": [
+      {
+        "id": "task-understanding",
+        "label": "Task Understanding",
+        "score": 70,
+        "summary": "AGENTS.md agora diz que NNN-revisao.md e NNN-teste-tres-dedos.md são documentos de apoio, não specs. É melhoria estática (git diff de 1 linha), sem uso observado; a ferramenta não detectou a diferença.",
+        "findingRefs": []
+      },
+      {
+        "id": "controlled-execution",
+        "label": "Controlled Execution",
+        "score": 55,
+        "summary": "Há regras de allow, ask e deny, mas os comandos de instalar, rodar, testar e lint estão como pendentes, então a operação suportada não está definida.",
+        "findingRefs": []
+      },
+      {
+        "id": "change-validation",
+        "label": "Change Validation",
+        "score": 45,
+        "summary": "Não há comando de teste ou lint. O hook PostToolUse só avisa que nada foi validado, e nenhuma edição foi observada.",
+        "findingRefs": []
+      },
+      {
+        "id": "reliable-delivery",
+        "label": "Reliable Delivery",
+        "score": 50,
+        "summary": "Commit e push pedem confirmação e a spec tem critérios de aceite, mas não há entrega, recuperação nem execução observada.",
+        "findingRefs": []
+      },
+      {
+        "id": "learning-capture",
+        "label": "Learning Capture",
+        "score": 35,
+        "summary": "Nenhum episódio de tarefa foi observado, então não há aprendizado a avaliar. A nota é o piso do modelo.",
+        "findingRefs": []
+      }
+    ],
+    "aiAgentPractice": {
+      "inspectedSurfaces": [
+        "Rules",
+        "Skills",
+        "Hooks"
+      ],
+      "coverageRows": [
+        {
+          "surface": "Rules",
+          "scopes": [
+            "Project"
+          ],
+          "count": 1,
+          "paths": [
+            "CLAUDE.md"
+          ]
+        },
+        {
+          "surface": "Skills",
+          "scopes": [
+            "Project"
+          ],
+          "count": 1,
+          "paths": [
+            ".claude/skills/atualizar-spec/SKILL.md"
+          ]
+        },
+        {
+          "surface": "Hooks",
+          "scopes": [
+            "Project"
+          ],
+          "count": 1,
+          "paths": [
+            ".claude/settings.json"
+          ]
+        }
+      ]
+    },
+    "assignmentSummaries": []
+  },
+  "findings": []
+}

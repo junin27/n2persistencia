@@ -1,0 +1,104 @@
+{
+  "summary": {
+    "projectName": "deploy-sexta-automation",
+    "locale": "en",
+    "modelId": "agent-work-loop-v4",
+    "reportContractVersion": 25,
+    "overview": "O projeto tem orientação, permissões, hook e uma skill no lugar, mas nenhum uso foi observado: 0 sessões elegíveis na janela e nenhum comando de teste ou lint definido. Um ponto de orientação em AGENTS.md pode confundir o agente sobre quais arquivos de docs/specs/ são specs.",
+    "dimensions": [
+      {
+        "id": "task-understanding",
+        "label": "Task Understanding",
+        "score": 66,
+        "summary": "CLAUDE.md importa AGENTS.md e as specs têm local definido, mas a regra de nomes de docs/specs/ não distingue spec de documento de apoio.",
+        "findingRefs": [
+          "specs-folder-naming-ambiguity"
+        ]
+      },
+      {
+        "id": "controlled-execution",
+        "label": "Controlled Execution",
+        "score": 55,
+        "summary": "Há regras de allow, ask e deny, mas os comandos de instalar, rodar, testar e lint estão como pendentes, então a operação suportada não está definida.",
+        "findingRefs": []
+      },
+      {
+        "id": "change-validation",
+        "label": "Change Validation",
+        "score": 45,
+        "summary": "Não há comando de teste ou lint. O hook PostToolUse só avisa que nada foi validado, e nenhuma edição foi observada.",
+        "findingRefs": []
+      },
+      {
+        "id": "reliable-delivery",
+        "label": "Reliable Delivery",
+        "score": 50,
+        "summary": "Commit e push pedem confirmação e a spec tem critérios de aceite, mas não há entrega, recuperação nem execução observada.",
+        "findingRefs": []
+      },
+      {
+        "id": "learning-capture",
+        "label": "Learning Capture",
+        "score": 35,
+        "summary": "Nenhum episódio de tarefa foi observado, então não há aprendizado a avaliar. A nota é o piso do modelo.",
+        "findingRefs": []
+      }
+    ],
+    "aiAgentPractice": {
+      "inspectedSurfaces": [
+        "Rules",
+        "Skills",
+        "Hooks"
+      ],
+      "coverageRows": [
+        {
+          "surface": "Rules",
+          "scopes": [
+            "Project"
+          ],
+          "count": 1,
+          "paths": [
+            "CLAUDE.md"
+          ]
+        },
+        {
+          "surface": "Skills",
+          "scopes": [
+            "Project"
+          ],
+          "count": 1,
+          "paths": [
+            ".claude/skills/atualizar-spec/SKILL.md"
+          ]
+        },
+        {
+          "surface": "Hooks",
+          "scopes": [
+            "Project"
+          ],
+          "count": 1,
+          "paths": [
+            ".claude/settings.json"
+          ]
+        }
+      ]
+    },
+    "assignmentSummaries": []
+  },
+  "findings": [
+    {
+      "id": "specs-folder-naming-ambiguity",
+      "title": "AGENTS.md chama de spec arquivos de docs/specs/ que não são specs",
+      "severity": "Low",
+      "reason": "Fato: AGENTS.md diz que cada arquivo NNN-<nome>.md de docs/specs/ tem as sete seções e a seção Decisões no fim. A pasta tem 001-revisao.md e 001-teste-tres-dedos.md, que seguem esse nome mas são o registro da revisão cruzada e um roteiro de teste, sem essas seções. Inferência: um agente que listar a pasta pelo padrão, ou receber um pedido para atualizar a spec 001, pode tratá-los como specs ou não saber qual abrir. Dono: AGENTS.md, seção Onde ficam as specs. Não há sessão observada, então a consequência não foi vista em uso.",
+      "dimensionRefs": [
+        "task-understanding"
+      ],
+      "aiFixPrompt": "/better-harness fix this issue\n\nEm AGENTS.md, na seção \"Onde ficam as specs\", acrescente uma frase dizendo que arquivos como NNN-revisao.md e NNN-teste-tres-dedos.md são documentos de apoio da spec NNN, não specs, e não têm as sete seções. Não altere nenhum arquivo de docs/specs/, CLAUDE.md, .claude/ nem a skill.\n\n## Validation\n\n- Confirme que AGENTS.md continua com no máximo uma página\n- Confirme com git diff que só AGENTS.md mudou, e só nessa seção",
+      "expectedArtifact": "AGENTS.md",
+      "expectedOutput": [
+        "AGENTS.md diz quais arquivos de docs/specs/ são specs e quais são documentos de apoio, sem mudar nenhum arquivo de docs/specs/."
+      ]
+    }
+  ]
+}

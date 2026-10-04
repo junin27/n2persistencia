@@ -30,7 +30,7 @@ CLAUDE.md         importa este arquivo e acrescenta o específico do harness
 
 ## Onde ficam as specs
 
-Em `docs/specs/`. Cada feature tem um arquivo `NNN-<nome>.md` com as sete seções: objetivo, escopo, atores, dados, regras de negócio, critérios de aceite e restrições. A seção Decisões fica no fim de cada spec.
+Em `docs/specs/`. Cada feature tem um arquivo `NNN-<nome>.md` com as sete seções: objetivo, escopo, atores, dados, regras de negócio, critérios de aceite e restrições. A seção Decisões fica no fim de cada spec. Arquivos como `NNN-revisao.md` e `NNN-teste-tres-dedos.md` são documentos de apoio da spec `NNN`, não são specs e não têm as sete seções.
 
 ## Como você deve trabalhar
 
