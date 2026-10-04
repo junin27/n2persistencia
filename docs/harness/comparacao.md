@@ -27,3 +27,19 @@ As notas são julgamento do relatório a partir dos arquivos, não medição aut
 - A única dimensão que mudou foi Task Understanding, e a mudança é estática: o arquivo mudou, mas nenhuma sessão o usou.
 - Controlled Execution e Change Validation não mudaram, embora tenham sido mexidas. O motivo é que as regras de permissão e o hook existem, mas não há comando de teste ou lint para exercitá-los. Existir não é o mesmo que ser usado.
 - O relatório marcou quase tudo como "não observado". Isso significa que a ferramenta não tinha sessões para analisar, e não que o projeto está sem o mecanismo.
+
+## Medição 3 (pasta do projeto)
+
+Medição 3 (harness configurado): `relatorio-3-medicao/`. Foi a primeira medição feita dentro de `deploy-sexta-automation/` (raiz do repositório), em profundidade quick com janela de 7 dias.
+
+| Dimensão | Medição 1 | Medição 2 | Medição 3 |
+|---|---|---|---|
+| Entendimento da tarefa (Task Understanding) | 66 | 70 | 60 |
+| Execução controlada (Controlled Execution) | 55 | 55 | 58 |
+| Validação da mudança (Change Validation) | 45 | 45 | 42 |
+| Entrega confiável (Reliable Delivery) | 50 | 50 | 40 |
+| Captura de aprendizado (Learning Capture) | 35 | 35 | 35 |
+
+A comparação com as medições 1 e 2 não é limpa: o alvo mudou (`gustavo12` → pasta do projeto) e a profundidade também (normal → quick). As notas seguem sendo julgamento do relatório a partir das evidências, não medição automática.
+
+A leitura completa da medição 3, com as provas de Contexto, Skill, Hook e Permissão, está em `evidencias.md`.

@@ -1,0 +1,104 @@
+{
+  "summary": {
+    "projectName": "deploy-sexta-automation",
+    "locale": "en",
+    "modelId": "agent-work-loop-v4",
+    "reportContractVersion": 25,
+    "overview": "Os ativos de harness do projeto são poucos, coerentes e limpos nos verificadores determinísticos (lint 0, integrity 0): CLAUDE.md importa AGENTS.md e acrescenta regras de harness, a skill atualizar-spec tem gatilho claro e o deny de .env é efetivo pelos globs de Read/Edit. A revisão é limitada por sessão (0 episódios elegíveis na janela) e o projeto é greenfield: a disciplina spec-first (spec 001 com critérios de aceite e Decisões) está presente, mas ainda sem contrapartida exercitada em código de domínio ou em testes. O único achado concreto e reparável é a confiabilidade não verificada do hook de validação pós-edição neste host Windows.",
+    "dimensions": [
+      {
+        "id": "task-understanding",
+        "label": "Task Understanding",
+        "score": 60,
+        "summary": "Orientação autoritativa presente e coerente (AGENTS.md, CLAUDE.md, spec 001 com critérios de aceite e seção Decisões), porém não exercitada em nenhum episódio e sem contrapartida em código de domínio que realize a spec.",
+        "findingRefs": []
+      },
+      {
+        "id": "controlled-execution",
+        "label": "Controlled Execution",
+        "score": 58,
+        "summary": "Rotas de inicialização declaradas (scripts npm dev/build/lint/test) e bloqueio de .env efetivo via globs Read/Edit; execução real não foi exercitada e a confiabilidade do hook de validação permanece em aberto.",
+        "findingRefs": []
+      },
+      {
+        "id": "change-validation",
+        "label": "Change Validation",
+        "score": 42,
+        "summary": "Jest e ESLint configurados, mas há apenas 1 teste de starter, nenhum teste mapeado a comportamento de domínio, e o gatilho de validação (hook pós-edição) tem execução não observada neste host.",
+        "findingRefs": [
+          "validation-hook-posix-win32"
+        ]
+      },
+      {
+        "id": "reliable-delivery",
+        "label": "Reliable Delivery",
+        "score": 40,
+        "summary": "Sem evidência de fronteira real de aceite (revisão, CI, merge ou release) nem de rollback/recuperação no recorte estático; estado não observado, condizente com projeto greenfield.",
+        "findingRefs": []
+      },
+      {
+        "id": "learning-capture",
+        "label": "Learning Capture",
+        "score": 35,
+        "summary": "Revisão limitada por sessão (0 episódios, 0 memórias); nenhum loop reutilizável exercitado nem comparação posterior. Piso que indica apenas revisão concluída, sem crédito por configuração.",
+        "findingRefs": []
+      }
+    ],
+    "aiAgentPractice": {
+      "inspectedSurfaces": [
+        "Rules",
+        "Skills",
+        "Hooks"
+      ],
+      "coverageRows": [
+        {
+          "surface": "Rules",
+          "scopes": [
+            "Project"
+          ],
+          "count": 1,
+          "paths": [
+            "CLAUDE.md"
+          ]
+        },
+        {
+          "surface": "Skills",
+          "scopes": [
+            "Project"
+          ],
+          "count": 1,
+          "paths": [
+            ".claude/skills/atualizar-spec/SKILL.md"
+          ]
+        },
+        {
+          "surface": "Hooks",
+          "scopes": [
+            "Project"
+          ],
+          "count": 1,
+          "paths": [
+            ".claude/settings.json"
+          ]
+        }
+      ]
+    },
+    "assignmentSummaries": []
+  },
+  "findings": [
+    {
+      "id": "validation-hook-posix-win32",
+      "title": "O hook de lint pós-edição pode não rodar neste host Windows",
+      "severity": "Low",
+      "reason": "Fato: o hook PostToolUse (matcher Edit|Write) em .claude/settings.json executa um comando em sintaxe POSIX sh (`if [ -f package.json ]; then npm run lint; else echo ...; fi`), e este host é win32 com PowerShell como shell primário. Inferência (não verificada): se o executor de hooks do Claude Code neste host não for um shell POSIX, o comando não parseia e o único guardrail automático de validação (lint após cada edição) falha silenciosamente — e, como o ramo else só dispara quando falta package.json (que aqui sempre existe), nenhum aviso seria emitido; se for POSIX, o comando roda `npm run lint` sem escopo, varrendo o repositório inteiro a cada Edit|Write, inclusive em docs/specs/*.md. Dono: o bloco hooks.PostToolUse em .claude/settings.json. Incerteza: a execução do hook não foi observada; o resultado depende de qual shell o harness usa para hooks neste host.",
+      "dimensionRefs": [
+        "change-validation"
+      ],
+      "aiFixPrompt": "/better-harness fix this issue\n\nTorne o hook de validação pós-edição confiável e portátil no host Windows deste projeto, mantendo a intenção de rodar o lint após edições de código. Mantenha o deny de .env e as demais regras intactos.\n\n## Passos\n\n- Confirme qual shell o Claude Code usa para executar hooks neste host (win32) antes de reescrever o comando; não assuma um interpretador.\n- Faça o comando ser válido nesse shell, ou invoque explicitamente um interpretador disponível.\n- Limite o lint ao escopo relevante (arquivos JS/TS ou o arquivo editado) para não varrer docs/specs/*.md a cada edição.\n- Garanta que a falta de lint bloqueie a afirmação de 'edição validada', em vez de passar silenciosamente.\n\n## Validação\n\n- Dispare uma edição (Edit/Write) em um arquivo .ts e confirme que `npm run lint` realmente executa no shell de hooks deste host.\n- Dispare uma edição em docs/specs/*.md e confirme o comportamento de escopo esperado.",
+      "expectedArtifact": "Hook",
+      "expectedOutput": [
+        "O hook de validação pós-edição executa de forma determinística no shell que o Claude Code usa neste host Windows, com escopo adequado e sem falha silenciosa."
+      ]
+    }
+  ]
+}

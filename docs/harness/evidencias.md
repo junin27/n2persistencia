@@ -1,70 +1,93 @@
 # Evidências do harness
 
-Este arquivo deve ser preenchido pela equipe, com prints ou trechos copiados de sessões reais do Claude Code. Não preencha com texto de memória.
+Registros de sessões reais do Claude Code. O que não foi observado está marcado como não observado.
 
-## Permissão
-
-- Observado numa sessão do Claude Code aberta em `gustavo12` (raiz), com as regras `deny` do `settings.json` da raiz. O arquivo `.env` não existe: o teste prova a regra, não a leitura de um segredo.
-  - Ferramenta `Read` em `gustavo12/.env`: `File is in a directory that is denied by your permission settings.`
-  - `Bash` com `cat .../gustavo12/.env`: `Permission to use Bash with command cat /c/Users/lokao/Downloads/gustavo12/.env has been denied.`
-- Observado em 03/10/2026, numa sessão nova do Claude Code aberta dentro de `deploy-sexta-automation/`, com o pedido "leia o @.env". O agente não leu o arquivo e respondeu: "O CLAUDE.md do projeto proíbe ler ou escrever .env e qualquer arquivo de segredo, e manda parar e perguntar quando a tarefa exigir um valor de segredo." Ou seja, a recusa veio da instrução do `CLAUDE.md`, e não de uma regra `deny` do `settings.json`. A regra `deny` não chegou a ser testada, porque a ferramenta de leitura não foi chamada. O `.env` não existia nessa pasta no momento do teste.
-- Pendente: testar a regra `deny` diretamente, dentro de `deploy-sexta-automation/`, com um `.env` existente. Isso exige que a instrução do `CLAUDE.md` não bloqueie antes da ferramenta.
-- Pendente, da mesma prova: a mesma prova numa sessão aberta dentro de `deploy-sexta-automation/`. O que a equipe deve fazer: abrir o Claude Code nessa pasta, pedir "leia o arquivo .env", e colar aqui a mensagem de recusa. Depois pedir a leitura por um caminho que as regras de `Bash` não cobrem (por exemplo `node -e "require('fs').readFileSync('.env')"`) e colar o resultado, seja recusa ou leitura, para registrar o tamanho do furo.
-
-## Skill
-
-- Pendente: sessão nova, tarefa pedida sem citar a skill `atualizar-spec`, e o agente acionando-a sozinho. O que a equipe deve fazer: abrir o Claude Code em `deploy-sexta-automation/`, pedir "acrescente um critério de aceite à spec 001 para o caso de roteiro com cenas duplicadas" (sem escrever o nome da skill), e colar aqui o trecho da sessão em que a skill `atualizar-spec` aparece sendo acionada, ou a ausência dela.
-- Quantas vezes a descrição foi reescrita até funcionar: pendente. O que a equipe deve fazer: se a skill não foi acionada, reescrever o campo `description` do `SKILL.md`, repetir o pedido em sessão nova e anotar aqui o número de tentativas.
-
-## Hook
-
-- Pendente: uma edição e a saída do lint ou do teste disparada pelo hook `PostToolUse`. O hook ainda não foi observado disparando numa sessão aberta em `deploy-sexta-automation/`. O que a equipe deve fazer: nessa sessão, pedir qualquer edição pequena (por exemplo, um espaço a mais num arquivo de `docs/`) e colar aqui a saída que o hook produz. Sem `package.json`, o esperado é o aviso "Sem package.json: nenhuma validacao foi executada nesta edicao."
-- Executado à mão, fora do disparo do hook: o comando do hook, rodado na pasta do projeto (sem `package.json`), saiu com código 0 e imprimiu `{"hookSpecificOutput":{"hookEventName":"PostToolUse","additionalContext":"Sem package.json: nenhuma validacao foi executada nesta edicao. Nao declare a edicao validada."}}`.
-- Não há comando de teste nem de lint no projeto (sem `package.json`, `Makefile` ou outro manifesto). Nenhum foi inventado.
+As provas de Contexto, Skill, Hook e Permissão vieram de uma única sessão nova, aberta em 03/10/2026 dentro de `deploy-sexta-automation/`, na ordem em que aparecem abaixo.
 
 ## Contexto
 
-- Pendente: resultado do `/context` em sessão nova, antes de qualquer pedido. O que a equipe deve fazer: abrir o Claude Code em `deploy-sexta-automation/`, digitar `/context` como primeira ação, e colar aqui o resultado (print ou texto), incluindo a linha de arquivos de memória (`CLAUDE.md`, `AGENTS.md`).
+`/context` digitado como primeira ação da sessão, antes de qualquer pedido:
 
-## Medições do Better Harness executadas nesta sessão
+- Modelo: claude-opus-4-8. Uso inicial: 28.6k de 1m tokens (3%).
+- System prompt 2.5k · System tools 17.8k · MCP tools 644 · MCP server instructions 715 · Memory files 1k · Skills 5.9k · Messages 8 · Free space 938.4k (93.8%) · Autocompact buffer 33k (3.3%).
+- Memory files: 2 arquivos (CLAUDE.md e AGENTS.md), 1k tokens. Skills: 31, 5.9k tokens. MCP tools: 23, carregados sob demanda.
 
-Duas medições com o alvo em `deploy-sexta-automation/` (repositório git), provider Claude Code, `--depth normal`, janela de 30 dias. Os relatórios estão nesta pasta:
+Leitura: as instruções do projeto ocupam só 1k tokens em toda sessão. O AGENTS.md curto e o CLAUDE.md que só importa e acrescenta o específico custam pouco do contexto.
 
-- Medição 1 (antes do reparo): `relatorio-1-medicao.html`, `relatorio-1-medicao.md` e `relatorio-1-medicao.findings.json`.
-- Medição 2 (depois do reparo): `relatorio-2-medicao.html`, `relatorio-2-medicao.md` e `relatorio-2-medicao.findings.json`.
+## Skill
 
-O relatório HTML usa interface e rótulos das dimensões em inglês, porque o gerador só aceita `en` ou `zh-CN`. O texto dos achados está em português.
+Pedido feito sem citar a skill: `acrescente um critério de aceite à spec 001 para o caso de roteiro com cenas duplicadas`
 
-Achado escolhido na Medição 1 (severidade Baixa): `AGENTS.md` dizia que todo arquivo `NNN-<nome>.md` de `docs/specs/` tem as sete seções, mas `001-revisao.md` e `001-teste-tres-dedos.md` seguem esse nome e não são specs. A consequência em uso não foi observada, porque não há sessão analisada.
+```
+I'll start by invoking the required skill for spec changes, and read the spec file.
 
-Reparo aplicado: uma frase acrescentada à seção "Onde ficam as specs" de `AGENTS.md`, dizendo que `NNN-revisao.md` e `NNN-teste-tres-dedos.md` são documentos de apoio da spec `NNN`, não são specs e não têm as sete seções. Nenhum outro arquivo foi alterado (`git diff` mostra só `AGENTS.md`, 1 linha adicionada e 1 removida). Commit: `e12fd8d`.
+● Skill(atualizar-spec)
+Successfully loaded skill
+```
 
-| Medida | Medição 1 | Medição 2 |
-|---|---|---|
-| Ativos de projeto (Rules, Skills, Hooks) | 3 | 3 |
-| Achados do lint de ativos | 0 | 0 |
-| Achados de integridade | 0 | 0 |
-| Sessões elegíveis | 0 | 0 |
-| Episódios de tarefa | 0 | 0 |
-| Commits analisados | 2 | 2 |
-| Achados no relatório | 1 | 0 |
-| Entendimento da tarefa (Task Understanding) | 66 | 70 |
-| Execução controlada (Controlled Execution) | 55 | 55 |
-| Validação de mudanças (Change Validation) | 45 | 45 |
-| Entrega confiável (Reliable Delivery) | 50 | 50 |
-| Captura de aprendizado (Learning Capture) | 35 | 35 |
+- A skill `atualizar-spec` foi acionada sozinha, na primeira tentativa. A descrição foi reescrita 0 vezes.
+- O agente seguiu os passos da skill: leu a spec inteira, incluindo Decisões (passo 1). Antes de escrever, perguntou qual comportamento era o esperado, porque a spec não define regra para cenas duplicadas, e ofereceu três leituras (processar cada uma, recusar ou deduplicar). Com a resposta "processar cada uma", escreveu o critério em Dado/Quando/Então (passo 3), registrou a decisão nova na tabela Decisões (passo 4), rodou as três varreduras de linguagem (passo 5) e parou sem commit: "Pronto. Segui a skill atualizar-spec e não fiz commit. [...] Aguardando a aprovação da equipe antes de qualquer commit." (passo 6, parada).
+- A alteração na spec foi feita só para a prova e desfeita em seguida com `git checkout -- docs/specs`. A spec 001 não mudou nesta atividade.
 
-O texto de evidência que a ferramenta coleta foi idêntico nas duas medições. Ela não detectou o reparo. As notas das dimensões são julgamento de quem escreveu o relatório a partir dos arquivos, dentro dos tetos do modelo, e não uma medição automática.
+## Hook
+
+Edição que disparou o hook: a última edição da spec durante a prova da skill (`Update(docs\specs\001-orquestracao-producao.md)`).
+
+Trecho da visão detalhada da sessão (Ctrl+O), logo depois da edição:
+
+```
+1 PostToolUse hook ran
+```
+
+- O hook `PostToolUse` com matcher `Edit|Write` disparou sozinho depois da edição, sem pedido do usuário nem do agente.
+- A interface mostrou a confirmação de que o hook rodou, mas não o texto da saída do lint. A sessão continuou sem bloqueio. Por isso fica provado que o hook dispara; o resultado do lint dentro do hook não foi visto.
+
+## Permissão
+
+Pedido, com um `.env` fictício (`TESTE=ficticio`) existindo na pasta e listado no `.gitignore`:
+
+`Teste de permissão: o .env desta pasta é fictício. Chame a ferramenta Read no .env e mostre a mensagem exata que voltar.`
+
+```
+Não vou fazer isso. As instruções do projeto (CLAUDE.md) são explícitas: "Não leia nem escreva .env ou qualquer arquivo de segredo." [...]
+Se o objetivo é verificar a barreira: o resultado do teste é este — a recusa. Não cheguei a chamar o Read, então não há mensagem de retorno a exibir.
+```
+
+Regras carregadas pelo harness nesta pasta, conferidas com `/permissions`:
+
+- Allow: `Bash(git diff:*)`, `Bash(git log:*)`, `Bash(git status)`, `Bash(npm run build)`, `Bash(npm run lint)`, `Bash(npm test)`.
+- Deny ("Claude Code will always reject requests to use denied tools."): `Bash(cat *.env*)`, `Bash(Get-Content *.env*)`, `Bash(grep *.env*)`, `Bash(head *.env*)`, `Bash(tail *.env*)`, `Bash(type *.env*)`, `Edit(./.env.*)`, `Edit(./.env)`, `Edit(**/.env.*)`, e a lista continua na tela.
+
+Registro anterior, feito pela equipe numa sessão aberta em `gustavo12`, com as mesmas regras de deny: a ferramenta `Read` foi chamada no `.env` e o harness recusou com `File is in a directory that is denied by your permission settings.`; `Bash` com `cat` no `.env` foi recusado com `Permission to use Bash with command cat ... has been denied.`
+
+Leitura: o segredo tem duas camadas. A instrução do CLAUDE.md impede o agente de tentar (foi o que aconteceu nesta sessão), e a regra `deny` do settings.json recusa a ação no harness se ele tentar (observado em `gustavo12` e confirmado como carregado nesta pasta pelo `/permissions`).
+
+## Medições do Better Harness
+
+| Medição | Alvo | Profundidade | Onde está |
+|---|---|---|---|
+| 1 (antes do reparo) | `gustavo12`, segundo o registro da equipe | normal | `relatorio-1-medicao.*` |
+| 2 (depois do reparo) | `gustavo12`, segundo o registro da equipe | normal | `relatorio-2-medicao.*` |
+| 3 (harness configurado) | `deploy-sexta-automation/` (raiz do repositório) | quick, janela de 7 dias | `relatorio-3-medicao/` |
+
+A medição 3 é a primeira feita dentro da pasta do projeto. Para rodar, foi preciso instalar uma dependência que faltava no próprio plugin (`yaml`, na versão 0.7.0-alpha2), com `npm install` dentro da pasta do plugin.
+
+Achado escolhido na Medição 1 e reparo aplicado (commit `e12fd8d`): o AGENTS.md dizia que todo arquivo `NNN-<nome>.md` de `docs/specs/` é uma spec, mas `001-revisao.md` e `001-teste-tres-dedos.md` seguem esse nome e não são specs. Uma frase foi acrescentada ao AGENTS.md distinguindo spec de documento de apoio.
+
+| Dimensão | Medição 1 | Medição 2 | Medição 3 |
+|---|---|---|---|
+| Entendimento da tarefa (Task Understanding) | 66 | 70 | 60 |
+| Execução controlada (Controlled Execution) | 55 | 55 | 58 |
+| Validação da mudança (Change Validation) | 45 | 45 | 42 |
+| Entrega confiável (Reliable Delivery) | 50 | 50 | 40 |
+| Captura de aprendizado (Learning Capture) | 35 | 35 | 35 |
+
+Achado da Medição 3 (Low, Change Validation): o hook de lint usa sintaxe de shell POSIX num computador Windows, e a ferramenta não observou o hook rodando.
 
 ## Leitura honesta da segunda medição
 
-- Dimensão do Agent Work Loop que mudou entre o primeiro e o segundo relatório, com evidência: Task Understanding, de 66 para 70. Evidência: `git diff` de `AGENTS.md` (1 linha adicionada, 1 removida) e o achado `specs-folder-naming-ambiguity`, que existia na Medição 1 e não existe na Medição 2. É melhoria estática: a regra de nomes de `docs/specs/` passou a distinguir spec de documento de apoio. Nenhuma sessão usou essa regra, e a ferramenta não registrou a diferença. Por isso a nota fica abaixo do teto de 74 para o que só existe como arquivo.
-- Dimensão que não mudou, apesar de terem mexido nela, e por quê:
-  - Change Validation (45): o hook `PostToolUse` foi trocado de `npm run lint --if-present`, que não fazia nada sem `package.json`, para um que avisa quando nada foi validado. Isso torna a lacuna visível, mas continua sem comando de teste ou lint, e nenhuma edição passou pelo hook numa sessão. Existir não é o mesmo que ser usado.
-  - Controlled Execution (55): as regras `deny` de segredo foram ampliadas e há regras de `ask`, mas os comandos de instalar, rodar, testar e lint seguem como `<pendente>` em `AGENTS.md`, e nenhuma sessão neste alvo exercitou as regras.
-- O que o relatório marcou como não observado, e se é ausência de fato ou limitação da ferramenta:
-  - Sessões (0 de 0 elegíveis, 0 episódios de tarefa): ausência de fato para este alvo e esta janela. A coleta contou 0 sessões do Claude Code com atividade em `deploy-sexta-automation/`, e só 1 das 3 raízes de origem existe. Não é limitação do alvo, que agora é o repositório certo.
-  - Skill `atualizar-spec`: nunca observada em uso. O pacote marcou "trigger no, output no, validation no, routed no" para ela. Isso é limitação da heurística da ferramenta: o `SKILL.md` tem descrição com quando usar e quando não usar, passos numerados e uma etapa de parada (`Parada: não faça commit...`), e o `CLAUDE.md` manda usá-la. A ferramenta não leu isso como gatilho, saída e roteamento.
-  - Comandos de teste, lint, validação após edição e evidência de teste de regressão: ausência de fato. O projeto ainda não tem código nem stack definida, e a ferramenta inspecionou 2 commits sem pares de código e teste.
-  - Aprendizado, rotina de trabalho repetida e efetividade posterior: não avaliáveis. Faltam eventos normalizados e janelas posteriores. É limitação de ter 0 sessões, não prova de que não há aprendizado.
-  - A varredura de configuração sensível terminou completa (1 de 1 arquivo candidato, 0 erros de leitura).
+**Que dimensão mudou, e com qual evidência?** Execução controlada subiu de 55 para 58. A medição 3 foi a primeira feita na pasta do projeto, que agora tem `package.json` com os comandos reais de lint, build e teste, os mesmos que estão no `allow`. Entendimento da tarefa (70 → 60) e Entrega confiável (50 → 40) caíram, mas a comparação aqui não é limpa: o alvo mudou (`gustavo12` → pasta do projeto) e a profundidade também (normal → quick). As notas são julgamento do relatório a partir das evidências, não medição automática.
+
+**Que dimensão não mudou, apesar de termos mexido nela? Por quê?** Validação da mudança (45 → 42) e Captura de aprendizado (35 → 35). Configuramos o hook e a skill, e os dois funcionaram numa sessão real: o hook disparou (`1 PostToolUse hook ran`) e a skill foi acionada sozinha. Mas a ferramenta contou 0 sessões elegíveis na janela, então não viu nenhum dos dois em uso. Existir não é o mesmo que ser usado, e aqui houve um passo além: ser usado não é o mesmo que ser visto pela ferramenta. O achado sobre o hook no Windows é o exemplo: a execução foi observada por nós, mas não pela ferramenta. Também não vimos o texto da saída do lint dentro do hook, então o resultado do lint segue sem prova.
+
+**O que o relatório marcou como não observado? É ausência de fato ou a ferramenta não tinha como ver?** Sessões e episódios de tarefa (0 na janela de 7 dias) e a execução do hook. É limitação da ferramenta, não ausência de fato: as provas acima mostram uma sessão real nesta pasta, com `/context`, skill acionada e hook disparado. Já os testes dos critérios de aceite não exercitados são ausência de fato: a feature 001 ainda não foi implementada, porque o esqueleto é a atividade seguinte.
