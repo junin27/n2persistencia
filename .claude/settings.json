@@ -3,7 +3,9 @@
     "allow": [
       "Bash(git status)",
       "Bash(git log:*)",
-      "Bash(git diff:*)"
+      "Bash(git diff:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run build)"
     ],
     "ask": [
       "Bash(git push:*)",

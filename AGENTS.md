@@ -4,18 +4,20 @@ Projeto: Deploy Sexta Automation (DSA), micro-SaaS que orquestra a produção de
 
 ## Comandos
 
-Ainda não definidos. A stack do projeto será escolhida pela equipe. Quando houver código, preencher:
+- Instalar: `npm install`
+- Rodar: `npm run dev` (sobe em http://localhost:3000)
+- Build: `npm run build`
+- Lint: `npm run lint`
+- Testar: pendente. A equipe ainda não escolheu o framework de teste. Não invente um comando de teste.
 
-- Instalar: `<pendente>`
-- Rodar: `<pendente>`
-- Testar: `<pendente>`
-- Lint: `<pendente>`
-
-Enquanto isso, não invente comandos. Se algum comando for necessário e não estiver aqui, pergunte.
+Se algum comando for necessário e não estiver aqui, pergunte.
 
 ## Stack e versões
 
-Pendente. Definir linguagem, framework e versões antes da primeira linha de código.
+- Linguagem: TypeScript sobre Node.js.
+- Framework: Next.js (aplicação web).
+- Versões: pendente. Registrar aqui a versão do Node e do Next.js quando o projeto for criado.
+- Teste: pendente. A equipe ainda não escolheu o framework de teste.
 
 ## Estrutura de pastas
 
