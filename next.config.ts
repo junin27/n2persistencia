@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  agentRules: false,
+  outputFileTracingRoot: process.cwd(),
+  serverExternalPackages: ["ffmpeg-static", "sharp"],
 };
 
 export default nextConfig;

@@ -1,44 +1,30 @@
 # AGENTS.md
+Projeto: Deploy Sexta Automation. Versão local: roteiro -> imagens de texto -> MP4; sem IA ou APIs externas.
 
-Projeto: Deploy Sexta Automation (DSA), micro-SaaS que orquestra a produção de vídeo para criadores de conteúdo.
-
-## Comandos
-
-- Instalar: `npm install`
-- Rodar: `npm run dev` (sobe em http://localhost:3000)
-- Build: `npm run build`
-- Lint: `npm run lint`
-- Testar: `npm test` (Jest, com Testing Library). Os testes ficam em `__tests__/` e terminam em `.test.ts` ou `.test.tsx`.
-
-Se algum comando for necessário e não estiver aqui, pergunte.
+## Comandos (na raiz)
+- Instalar: `npm ci` (internet na primeira instalação para baixar dependências e FFmpeg).
+- Rodar: `npm run dev` e abrir http://localhost:3000.
+- Build: `npm run build`; produção: `npm start`.
+- Testar: `npm test -- --runInBand`; inclui geração de vídeo real, não exige FFmpeg global.
+- No PowerShell, use `npm.cmd test -- --runInBand` para preservar os argumentos do Jest.
+- Lint: `npm run lint`.
+- Prova HTTP/reinício: `npm run build` e `node scripts/verify-api.mjs` (usa porta 3011).
+- Parar servidor iniciado no terminal: Ctrl+C. Use uma única instância local do aplicativo.
 
 ## Stack e versões
+Node 22.16.0 (`.nvmrc`); TypeScript 5.9.3; Next.js 16.3.8; React 19.2.8; Jest 30.5.2; ESLint 9.39.5; Sharp 0.35.5; ffmpeg-static 5.3.0. Versões diretas exatas em package.json; transitivas em package-lock.json. Next usa webpack para evitar junctions de pacotes nativos no Windows. Nenhum MCP é necessário para rodar esta feature.
 
-- Linguagem: TypeScript 5 sobre Node.js 22.15.1.
-- Framework: Next.js 16.3.8 com React 19.2.8 (aplicação web).
-- Teste: Jest 30 com Testing Library (ambiente jsdom).
-- Lint: ESLint 9 com eslint-config-next 16.3.8.
-
-## Estrutura de pastas
-
-```
-app/              páginas do Next.js
-__tests__/        testes Jest
-docs/
-  specs/          specs das features (001-orquestracao-producao.md, ...)
-  harness/        relatórios do Better Harness e evidências do harness
-.claude/          configuração do Claude Code (settings.json, skills)
-AGENTS.md         este arquivo
-CLAUDE.md         importa este arquivo e acrescenta o específico do harness
-```
-
-## Onde ficam as specs
-
-Em `docs/specs/`. Cada feature tem um arquivo `NNN-<nome>.md` com as sete seções: objetivo, escopo, atores, dados, regras de negócio, critérios de aceite e restrições. A seção Decisões fica no fim de cada spec. Arquivos como `NNN-revisao.md` e `NNN-teste-tres-dedos.md` são documentos de apoio da spec `NNN`, não são specs e não têm as sete seções.
+## Pastas e specs
+- `app/`: interface e API; `lib/`: regras, persistência e mídia local.
+- `__tests__/`: testes dos critérios, interface e integração real.
+- `scripts/`: verificação HTTP; `data/`: projetos e arquivos gerados, ignorados pelo Git.
+- `docs/specs/`: spec `001-orquestracao-producao.md` e plano `001-plano.md`.
+- `001-revisao.md` e `001-teste-tres-dedos.md` são apoio, não specs; o plano também é apoio.
+- `docs/harness/`: relatórios, evidências e diário; `.claude/`: permissões, hook e skill.
+- `CLAUDE.md`: importa estas instruções e acrescenta o específico do Claude Code.
 
 ## Como você deve trabalhar
-
-- Declare suas suposições. Se o pedido admite duas leituras, pergunte antes de escolher uma.
-- O mínimo que resolve. Sem abstração de uso único, sem opção que ninguém pediu, sem tratar erro que não acontece.
-- Toque só no necessário. Mantenha o estilo do arquivo e não refatore código que funciona e não faz parte do pedido.
-- Diga como vai provar que funcionou, e rode a prova antes de dizer que terminou.
+- Declare suposições; se o pedido tem duas leituras, pergunte antes de escolher.
+- Faça o mínimo que resolve; não acrescente abstrações ou opções sem necessidade.
+- Toque só no necessário; preserve o estilo e o código fora do pedido.
+- Diga como vai provar e execute a prova antes de declarar conclusão.
