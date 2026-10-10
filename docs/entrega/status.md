@@ -3,7 +3,7 @@
 ## Concluído localmente
 
 - Interface, roteiro/cenas, imagens de texto, MP4 real, erros, reexecução e persistência.
-- Revisão técnica delegada pelo usuário, registrada em `revisao-final.md`; teste dos três dedos preenchido como revisão do Codex.
+- Revisão técnica em `revisao-final.md`; reteste humano do CA-04 confirmado por Maycon em 10/10/2026 (D-36), com registro em `REVISAO-MAYCON-CA04.md`. Os demais critérios da tabela continuam como revisão técnica do Codex.
 - Instalação do zero em extração limpa, 21 testes, lint, compilação com TypeScript e prova HTTP com MP4/reinício passaram. Isso não substitui clone pelo colega.
 - Correção da comparação dos relatórios 1 e 2; históricos preservados.
 - Orientações para provas do Claude, publicação pelo responsável e teste por outro integrante.
