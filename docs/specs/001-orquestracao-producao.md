@@ -1,6 +1,6 @@
 # Spec 001: Orquestração da produção de vídeo (roteiro → geração → edição)
 
-> **Status:** rascunho para revisão cruzada. Todas as decisões estão na seção Decisões. A pergunta de reconstrução e a revisão cruzada ainda estão pendentes.
+> **Status:** versão local implementada e revisada tecnicamente pelo Codex em 10/10/2026, a pedido do usuário. Revisão textual dos sete critérios em 001-teste-tres-dedos.md. Revisão cruzada histórica de 03/10 preservada. D-26 a D-33 aguardam confirmação dos demais integrantes; não há aprovação atribuída a eles. A aceitação da mudança de escopo pelo professor não foi confirmada.
 
 ## 1. Objetivo
 
@@ -10,7 +10,7 @@ Permitir que um criador de conteúdo leve um roteiro até um vídeo editado fina
 
 **Entra:**
 - Receber um roteiro em texto e dividi-lo em cenas.
-- Gerar uma imagem ou clipe para cada cena.
+- Gerar uma imagem com o texto completo de cada cena na versão local (D-26).
 - Montar as cenas geradas em uma edição final.
 - Informar o estado de cada etapa ao criador.
 
@@ -20,12 +20,13 @@ Permitir que um criador de conteúdo leve um roteiro até um vídeo editado fina
 - Edição fina manual dentro da plataforma (a edição final é gerada pelo fluxo).
 - Cobrança, assinatura e controle de acesso beta.
 - Suporte a idiomas diferentes do português.
+- Geração por IA e integração com serviços externos na versão local (D-26).
 
 ## 3. Atores
 
 - **Criador de conteúdo:** envia o roteiro, acompanha o andamento e baixa o resultado.
 - **Sistema orquestrador:** executa as etapas em ordem e registra o estado de cada uma.
-- **Serviços externos de geração e edição:** produzem as imagens, os clipes e a montagem final. Não são controlados pelo criador.
+- **Serviços locais de geração e edição:** produzem imagens com texto e montam o vídeo final. Nesta versão não chamam APIs externas (D-26).
 
 ## 4. Dados
 
@@ -39,13 +40,13 @@ Permitir que um criador de conteúdo leve um roteiro até um vídeo editado fina
 - **RN-02:** o roteiro é dividido em cenas na ordem em que aparece no texto.
 - **RN-03:** uma execução é cada envio do projeto pelo criador, seja a criação ou uma reexecução (RN-06). Em cada execução, o sistema processa cada cena no máximo uma vez. Uma cena já gerada não é recriada.
 - **RN-04:** o sistema inicia a edição final somente quando todas as cenas do projeto estiverem geradas.
-- **RN-05:** se uma cena falhar, o projeto fica com estado "falhou" e a cena fica com estado "falhou" e uma mensagem de erro registrada no projeto. O sistema mantém o estado e o arquivo das demais cenas geradas.
+- **RN-05:** se uma cena falhar, o projeto fica com estado "falhou" e a cena fica com estado "falhou" e uma mensagem de erro registrada na cena e no projeto. O sistema mantém o estado e o arquivo das demais cenas geradas.
 - **RN-06:** o criador pode reexecutar um projeto que falhou. O sistema processa novamente apenas as cenas com estado "falhou" ou "pendente".
 - **RN-07:** o projeto concluído expõe um único arquivo de vídeo final para download.
 - **RN-08:** se a geração de uma cena não terminar em 10 minutos, contados a partir do início da geração da cena (o tempo de espera antes desse início não conta), a cena é considerada falhou.
 - **RN-09:** o sistema não repete automaticamente uma cena que falhou. Apenas o criador dispara novas tentativas, pelo fluxo da RN-06.
-- **RN-11:** a edição final deve terminar em até 30 minutos, contados a partir do início do processamento da edição final (o tempo de espera antes desse início não conta). Se passar desse tempo, o projeto fica com estado "falhou" e a mensagem "A edição final excedeu o limite de 30 minutos.", e as cenas geradas são mantidas.
 - **RN-10:** um roteiro com mais de 10 cenas, ou com alguma cena com mais de 2.000 caracteres, é recusado com a mensagem "O roteiro excede o limite de 10 cenas de até 2.000 caracteres cada." e nenhum projeto é criado.
+- **RN-11:** a edição final deve terminar em até 30 minutos, contados a partir do início do processamento da edição final (o tempo de espera antes desse início não conta). Se passar desse tempo, o projeto fica com estado "falhou" e a mensagem "A edição final excedeu o limite de 30 minutos.", e as cenas geradas são mantidas.
 
 ## 6. Critérios de aceite
 
@@ -65,9 +66,14 @@ Permitir que um criador de conteúdo leve um roteiro até um vídeo editado fina
 - **Então** o projeto está "falhou", a cena 3 exibe uma mensagem de erro não vazia, e as cenas 1 e 2 continuam disponíveis para download no projeto.
 
 **CA-04: reexecução processa apenas o que falhou**
-- **Dado** um projeto de 3 cenas em que as cenas 1 e 2 foram geradas e a cena 3 falhou,
+- **Dado** um projeto de 3 cenas em que as cenas 1 e 2 foram geradas, a cena 3 falhou e o serviço de geração está disponível na nova tentativa,
 - **Quando** o criador solicita a reexecução,
 - **Então** a cena 3 passa a mostrar o estado "gerada" na tela do projeto, e as cenas 1 e 2 continuam com o mesmo arquivo que tinham antes da reexecução.
+
+**CA-05: roteiro sem cena é recusado**
+- **Dado** que o criador envia um roteiro vazio ou formado só por espaços,
+- **Quando** o envio é confirmado,
+- **Então** o sistema mostra a mensagem "O roteiro precisa ter pelo menos uma cena." e nenhum projeto é criado.
 
 **CA-06: roteiro com mais de 10 cenas é recusado**
 - **Dado** que o criador envia um roteiro com 11 cenas,
@@ -79,11 +85,6 @@ Permitir que um criador de conteúdo leve um roteiro até um vídeo editado fina
 - **Quando** o limite de 10 minutos é atingido,
 - **Então** a cena muda para "falhou", exibe a mensagem "A geração da cena excedeu 10 minutos." e o projeto muda para "falhou".
 
-**CA-05: roteiro sem cena é recusado**
-- **Dado** que o criador envia um roteiro vazio ou formado só por espaços,
-- **Quando** o envio é confirmado,
-- **Então** o sistema mostra a mensagem "O roteiro precisa ter pelo menos uma cena." e nenhum projeto é criado.
-
 ## Exemplos da regra RN-05 (falha em cena)
 
 RN-05 é a regra mais importante desta feature: ela define se o criador perde o trabalho já feito quando algo falha.
@@ -92,22 +93,22 @@ RN-05 é a regra mais importante desta feature: ela define se o criador perde o 
 |---|---|---|
 | Feliz | Projeto de 3 cenas, todas geradas com sucesso | Projeto "concluído", vídeo final disponível para download (RN-07) |
 | Borda | Projeto de 3 cenas; a cena 2 falha, o criador reexecuta (RN-06) e a cena 2 é gerada | Projeto "concluído". Cenas 1 e 3 mantêm o mesmo arquivo, sem recriação (RN-03) |
-| Erro | Projeto de 3 cenas; o serviço externo falha em todas as cenas | Projeto "falhou", as 3 cenas com estado "falhou" e mensagem de erro. Nenhum vídeo final é gerado |
+| Erro | Projeto de 3 cenas; o serviço de geração falha em todas as cenas | Projeto "falhou", as 3 cenas com estado "falhou" e mensagem de erro. Nenhum vídeo final é gerado |
 
 ## 7. Restrições
 
-- O sistema depende de serviços externos de geração e edição. Se um deles estiver indisponível, a cena correspondente falha sem derrubar o projeto inteiro.
+- Na versão local, o sistema gera imagens de texto e monta o vídeo com serviços executados na própria máquina. Falha de uma cena não impede tentar as demais; falha da montagem preserva as imagens (D-26, D-30).
 - O sistema gera o vídeo final em MP4, 1080p, 16:9.
-- Não há orçamento de chamadas aos serviços externos por projeto nesta feature. O limite de cenas (RN-10) restringe o número de chamadas. A equipe medirá o custo real por projeto no beta e tratará o orçamento em feature futura.
+- A versão local não faz chamadas externas. Orçamento e custo de fornecedores externos serão definidos somente quando essa integração entrar no escopo.
 - Os criadores e o sistema usam apenas português no texto do roteiro e na interface.
 
 ---
 
 ## Decisões
 
-Cada ambiguidade encontrada e o que a equipe decidiu. Preencher antes da revisão cruzada.
+Registro histórico das ambiguidades e decisões. As novas decisões de 10/10 foram revisadas tecnicamente pelo Codex a pedido do usuário; a confirmação dos demais integrantes permanece pendente.
 
-_Validação das decisões D-01 a D-17 pela equipe: validado em 03/10/2026. As decisões D-18 a D-23, vindas da revisão cruzada, foram validadas pela equipe em 03/10/2026. CA-06 e CA-07 aguardam o teste dos três dedos._
+_O registro de 03/10 relata aprovação das decisões e reteste de CA-07 em D-24. Entretanto, D-17 e D-16 contêm confirmações pendentes. A revisão técnica pelo Codex de 10/10 está em 001-teste-tres-dedos.md; não substitui confirmação dos integrantes. Consolidar as confirmações históricas antes da entrega._
 
 | # | Ambiguidade | Decisão | Motivo |
 |---|---|---|---|
@@ -136,14 +137,18 @@ _Validação das decisões D-01 a D-17 pela equipe: validado em 03/10/2026. As d
 | D-24 | Início da contagem de 10 minutos (RN-08, CA-07) | A contagem começa quando a geração da cena começa, como em D-20. A espera antes disso não conta | Reprovado por Danilo e Gilberto no teste de CA-07: sem o início definido, dois testadores podem chegar a resultados diferentes. Reteste em 03/10/2026 por Danilo e Gilberto, com o texto novo: passa, em linha com o resultado de Maycon |
 | D-25 | Casos de borda de CA-06 (10 cenas aceitas, 11 recusadas) | Sem mudança no critério. Os casos ficam como anotação para os testes | Sugestão do Gabriel. CA-06 cobre o caso de 11 cenas. O caso de 10 cenas aceitas não tem critério próprio e fica como anotação para o teste |
 | D-17 | Limite de tempo da edição final (CA-02, RN-11) | 30 minutos. Aplicado na spec como RN-11 e no CA-02. Aguarda confirmação da equipe | Reprovado por Danilo no teste dos três dedos: sem prazo, a espera pode ser indefinida. Valor proposto pelo autor, não definido em nenhum documento da disciplina |
+| D-26 | Serviços de geração/edição ainda não escolhidos | Versão local: cada cena vira uma imagem com seu texto; montagem local. Integrações externas e geração por IA ficam fora desta versão | Proposta explicada ao usuário, que autorizou continuar em 10/10. Simplificação explícita; não é prova de integração externa nem aprovação do professor |
+| D-27 | Como acompanhar e quando começar | Criação mostra cenas pendentes. O criador usa “Gerar vídeo”; a tela consulta o andamento durante a execução e oferece atualização manual | Preserva CA-01 e torna o andamento observável; substitui a lacuna D-22 |
+| D-28 | Montagem, áudio, duração e ordem | Cada cena ocupa 3 segundos; ordem original; cortes simples; sem áudio; MP4 1920 x 1080, 16:9 | Fecha montagem sem ampliar para editor manual ou narração |
+| D-29 | Armazenamento e retenção | Projetos e arquivos ficam na máquina local, disponíveis após reiniciar. Sem expiração automática; operador pode remover dados locais com o servidor parado. Interface permite reabrir pelo identificador | Define download e continuidade sem prometer nuvem ou multiusuário |
+| D-30 | Falha de cena e falha de edição | Registrar erro não vazio; tentar as demais cenas. Se a montagem falhar, preservar cenas e permitir reexecutar a montagem. Não repetir automaticamente | Concilia RN-03 a RN-06 e RN-09; novo erro de cena nunca invalida arquivos já gerados |
+| D-31 | Quando CA-04 garante sucesso | A disponibilidade do serviço na nova tentativa é condição do cenário. Se falhar novamente, manter estado falhou e preservar arquivos anteriores | Evita prometer sucesso de fornecedor indisponível; CA-04 atualizado requer reteste humano |
+| D-32 | Caracteres, separadores e quantidades | Linhas em branco separam cenas; espaços nas extremidades não contam; linhas simples permanecem na cena. Caracteres contam pontos Unicode. “Todas” refere-se às 1 a 10 cenas do projeto. Uma única execução ativa por projeto; concluído não reexecuta | Fecha limites de RN-10, quantidade e concorrência; implementação e testes devem usar a mesma regra |
+
+| D-33 | Texto com muitas quebras de linha na imagem | Na imagem, espaços e quebras simples viram um espaço, mantendo as palavras na ordem. O texto original permanece no projeto e na tela. Erro sem mensagem recebe explicação não vazia | Revisão de 10/10 encontrou risco de sobreposição em cenas de até 2.000 caracteres; garante conteúdo visual e RN-05 sem ampliar o escopo |
 
 **Pergunta de reconstrução:** se o código fosse apagado agora, esta spec seria suficiente para reconstruí-lo?
 
-_Resposta:_ **Não.** A spec define o comportamento visível (projeto, cenas, estados, regras e exemplos), mas não define o suficiente para reimplementar o sistema. Falta:
-- **Serviços externos:** quais serviços de geração e de edição são usados, e o formato de entrada e saída de cada chamada.
-- **Montagem da edição final:** ordem das cenas, transições, áudio e duração do vídeo.
-- **Acompanhamento:** como o criador vê o andamento (atualização automática ou consulta manual) e o formato da mensagem de erro.
-- **Armazenamento:** onde os arquivos das cenas e o vídeo final ficam guardados, por quanto tempo e como o download é feito.
-- **Tratamento de falha de serviço externo:** o que acontece com uma cena se o serviço ficar indisponível durante a geração, além do tempo máximo de RN-08.
+_Resposta em 10/10:_ **Sim para o comportamento da versão local descrita**, com imagens contendo o texto completo, 3 segundos por cena, montagem sem áudio, estados e downloads persistidos localmente. Não define uma integração externa ou geração por IA: essas funções estão explicitamente fora da versão local em D-26. A validação humana desta resposta pelos demais integrantes está pendente.
 
-Essas lacunas devem entrar na spec antes da revisão cruzada, ou ser registradas como decisões explícitas de fora de escopo.
+**Varreduras de 10/10:** termos de vagueza/fuga devem ser distinguidos de citações históricas nesta tabela. “Todas” tem quantidade fechada em D-32; “disponível” em CA-04 significa que a nova chamada termina com sucesso. A restrição histórica de custo de APIs aplica-se apenas à integração futura. Não há condição “se possível”/“se necessário” no comportamento da versão local.
