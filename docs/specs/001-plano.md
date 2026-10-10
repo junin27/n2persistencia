@@ -41,4 +41,4 @@ Cada commit de tarefa passou isoladamente em TypeScript, lint e testes (1, 7, 15
 - [x] Revisão técnica delegada do teste dos três dedos registrada como Codex, sem assinaturas humanas.
 - [x] Clone limpo rodado por integrante que não conduziu a sessão de implementação: Gabriel, commit `8e4b88b` (ver `docs/entrega/VALIDACAO-OUTRO-INTEGRANTE.md`).
 - [x] Comparação das medições corrigida.
-- [ ] Evidências novas do Claude Code completadas.
+- [x] Evidências novas do Claude Code completadas: deny do `.env` e hook com saída do ESLint, em 10/10/2026 (`docs/harness/evidencias.md`).

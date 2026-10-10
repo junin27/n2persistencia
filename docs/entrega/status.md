@@ -16,7 +16,7 @@
 - [x] Publicar no GitHub: Gabriel fez nove commits por tarefa (`6dcf0dc` a `8e4b88b`) e o commit de fechamento com a validação.
 - [x] Outro integrante validar clone novo e preencher `VALIDACAO-OUTRO-INTEGRANTE.md` (Gabriel, 10/10).
 - [x] Documentar uma fonte pública relacionada à dor em `EVIDENCIA-DO-PROBLEMA.md`, com limites explícitos; entrevista com o público específico ainda não realizada.
-- [ ] Depois dessas etapas, dividir/gravar vídeo de 10 a 15 minutos com os quatro falando.
-- [ ] Publicar vídeo não listado ou Drive com acesso por link; todos enviarem o mesmo conteúdo ao AVA, com repositório e commit final.
+- [x] Vídeo dividido entre os quatro integrantes (`apresentacao/`, commit `99d4543`) e gravado em 10/10/2026.
+- [ ] Publicar vídeo não listado ou Drive com acesso por link; todos enviarem o mesmo conteúdo ao AVA, com repositório e commit final. Feito fora do repositório, depois do último commit.
 
 Prazo dos PDFs: 10/10/2026 às 23h59. Prorrogação não confirmada. Integrantes: Maycon; Danilo da Silva Faria; Gabriel; Gilberto.
