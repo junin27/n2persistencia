@@ -36,7 +36,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "if [ -f package.json ]; then npm run lint; else echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"Sem package.json: nenhuma validacao foi executada nesta edicao. Nao declare a edicao validada.\"}}'; fi"
+            "command": "node scripts/post-edit.mjs"
           }
         ]
       }
