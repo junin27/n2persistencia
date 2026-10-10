@@ -10,10 +10,10 @@
 
 ## Falta para a entrega
 
-- [ ] Equipe confirmar a mudança de escopo local (D-26 a D-33); aceitação do professor para substituir serviços externos não está comprovada.
+- [ ] Equipe confirmar a mudança de escopo local (D-26 a D-33): Gabriel aprovou em 10/10 (D-34); Maycon, Danilo e Gilberto pendentes. Aceitação do professor para substituir serviços externos não está comprovada.
 - [ ] Completar deny do .env no projeto e saída de lint acionado pelo hook numa sessão real do Claude Code. Ver `../harness/COMO-REGISTRAR-PROVAS.md`.
-- [ ] Responsável com acesso ao GitHub revisar/publicar o pacote e registrar commit final. Usuário ainda não é colaborador; nenhum commit/push foi feito pelo agente.
-- [ ] Outro integrante validar clone novo e preencher `VALIDACAO-OUTRO-INTEGRANTE.md`.
+- [x] Publicar no GitHub: Gabriel fez nove commits por tarefa (`6dcf0dc` a `8e4b88b`) e o commit de fechamento com a validação.
+- [x] Outro integrante validar clone novo e preencher `VALIDACAO-OUTRO-INTEGRANTE.md` (Gabriel, 10/10).
 - [x] Documentar uma fonte pública relacionada à dor em `EVIDENCIA-DO-PROBLEMA.md`, com limites explícitos; entrevista com o público específico ainda não realizada.
 - [ ] Depois dessas etapas, dividir/gravar vídeo de 10 a 15 minutos com os quatro falando.
 - [ ] Publicar vídeo não listado ou Drive com acesso por link; todos enviarem o mesmo conteúdo ao AVA, com repositório e commit final.

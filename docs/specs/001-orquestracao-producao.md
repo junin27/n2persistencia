@@ -1,6 +1,6 @@
 # Spec 001: Orquestração da produção de vídeo (roteiro → geração → edição)
 
-> **Status:** versão local implementada e revisada tecnicamente pelo Codex em 10/10/2026, a pedido do usuário. Revisão textual dos sete critérios em 001-teste-tres-dedos.md. Revisão cruzada histórica de 03/10 preservada. D-26 a D-33 aguardam confirmação dos demais integrantes; não há aprovação atribuída a eles. A aceitação da mudança de escopo pelo professor não foi confirmada.
+> **Status:** versão local implementada e revisada tecnicamente pelo Codex em 10/10/2026, a pedido do usuário. Revisão textual dos sete critérios em 001-teste-tres-dedos.md. Revisão cruzada histórica de 03/10 preservada. Gabriel revisou e aprovou D-26 a D-33 e o plano em 10/10/2026, depois da implementação (D-34). Maycon, Danilo e Gilberto ainda não confirmaram; não há aprovação atribuída a eles. A aceitação da mudança de escopo pelo professor não foi confirmada.
 
 ## 1. Objetivo
 
@@ -106,7 +106,7 @@ RN-05 é a regra mais importante desta feature: ela define se o criador perde o 
 
 ## Decisões
 
-Registro histórico das ambiguidades e decisões. As novas decisões de 10/10 foram revisadas tecnicamente pelo Codex a pedido do usuário; a confirmação dos demais integrantes permanece pendente.
+Registro histórico das ambiguidades e decisões. As novas decisões de 10/10 foram revisadas tecnicamente pelo Codex a pedido do usuário e aprovadas por Gabriel (D-34); a confirmação de Maycon, Danilo e Gilberto permanece pendente.
 
 _O registro de 03/10 relata aprovação das decisões e reteste de CA-07 em D-24. Entretanto, D-17 e D-16 contêm confirmações pendentes. A revisão técnica pelo Codex de 10/10 está em 001-teste-tres-dedos.md; não substitui confirmação dos integrantes. Consolidar as confirmações históricas antes da entrega._
 
@@ -144,8 +144,8 @@ _O registro de 03/10 relata aprovação das decisões e reteste de CA-07 em D-24
 | D-30 | Falha de cena e falha de edição | Registrar erro não vazio; tentar as demais cenas. Se a montagem falhar, preservar cenas e permitir reexecutar a montagem. Não repetir automaticamente | Concilia RN-03 a RN-06 e RN-09; novo erro de cena nunca invalida arquivos já gerados |
 | D-31 | Quando CA-04 garante sucesso | A disponibilidade do serviço na nova tentativa é condição do cenário. Se falhar novamente, manter estado falhou e preservar arquivos anteriores | Evita prometer sucesso de fornecedor indisponível; CA-04 atualizado requer reteste humano |
 | D-32 | Caracteres, separadores e quantidades | Linhas em branco separam cenas; espaços nas extremidades não contam; linhas simples permanecem na cena. Caracteres contam pontos Unicode. “Todas” refere-se às 1 a 10 cenas do projeto. Uma única execução ativa por projeto; concluído não reexecuta | Fecha limites de RN-10, quantidade e concorrência; implementação e testes devem usar a mesma regra |
-
 | D-33 | Texto com muitas quebras de linha na imagem | Na imagem, espaços e quebras simples viram um espaço, mantendo as palavras na ordem. O texto original permanece no projeto e na tela. Erro sem mensagem recebe explicação não vazia | Revisão de 10/10 encontrou risco de sobreposição em cenas de até 2.000 caracteres; garante conteúdo visual e RN-05 sem ampliar o escopo |
+| D-34 | Revisão humana do plano e de D-26 a D-33 (incluindo CA-04 atualizado) | Gabriel revisou e aprovou o plano e as decisões D-26 a D-33 em 10/10/2026. Maycon, Danilo e Gilberto ainda não confirmaram. A aprovação não é reteste dos três dedos do CA-04 pedido em D-31 | A atividade de 03/10 pede revisão do plano antes do código. Esta revisão ocorreu depois da implementação e fica registrada com a data real, sem retroagir |
 
 **Pergunta de reconstrução:** se o código fosse apagado agora, esta spec seria suficiente para reconstruí-lo?
 

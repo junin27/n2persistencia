@@ -1,6 +1,6 @@
 # Plano da feature 001 - versão local
 
-Preparado antes do código de domínio em 10/10/2026; atualizado após revisão para incluir D-33. O usuário recebeu a proposta de roteiro -> imagens de texto -> MP4 real e autorizou continuar. A revisão pelos demais integrantes ainda deve ser registrada; este documento não atribui aprovação a ninguém.
+Preparado antes do código de domínio em 10/10/2026; atualizado após revisão para incluir D-33. O usuário recebeu a proposta de roteiro -> imagens de texto -> MP4 real e autorizou continuar. Gabriel revisou e aprovou este plano e D-26 a D-33 em 10/10/2026, depois da implementação (D-34 da spec); Maycon, Danilo e Gilberto ainda não confirmaram.
 
 ## Escopo e prova
 
@@ -16,14 +16,29 @@ Implementar a versão local das decisões D-26 a D-33. Manter os sete critérios
 6. Interface: formulário em português, cenas/erros/estados, execução, consulta e links de download. Prova: testes de interface e uso no navegador.
 7. Fechamento: lint, testes, build, diário real e atualização da spec/documentação. Outro integrante precisa testar clone limpo antes da entrega.
 
-## Commits propostos após revisão humana
+## Commits por tarefa
 
-Não inventar histórico nem commitar em nome dos integrantes. Separar mudanças revisadas por tarefa: `docs(001): fecha decisões e plano`; `feat(001): valida roteiro CA-01 CA-05 CA-06`; `feat(001): preserva e reexecuta cenas CA-03 CA-04 CA-07`; `feat(001): monta MP4 CA-02`; `feat(001): conecta interface`; `docs(001): registra verificação e diário`.
+Feitos por Gabriel em 10/10/2026, separando por tarefa a implementação que estava sem commit, sem alterar datas:
 
-## Revisão pendente
+| Tarefa | Commit |
+|---|---|
+| Decisões e plano | `6dcf0dc` docs(001): fecha decisões D-26 a D-33 e plano da versão local |
+| 1. Ambiente | `021daab` chore(001): fixa sharp e ffmpeg-static e prepara ambiente |
+| 2. Domínio | `6772f7c` feat(001): cria projeto e valida roteiro CA-01 CA-05 CA-06 |
+| 3. Orquestração | `f8dc0cc` feat(001): orquestra, preserva e reexecuta cenas CA-02 CA-03 CA-04 CA-07 |
+| 4. Mídia | `3d7b80b` feat(001): gera imagens de texto e monta MP4 CA-02 |
+| 5. Persistência/API | `5220cca` feat(001): persiste projetos e expõe API e downloads |
+| 6. Interface | `5507937` feat(001): conecta interface CA-01 CA-03 CA-04 CA-05 |
+| Harness | `da1a2d6` harness: troca hook POSIX por script Node portátil |
+| 7. Fechamento | `8e4b88b` docs(001): registra verificação, diário e evidências |
 
-- [ ] Demais integrantes conferiram D-26 a D-33 e CA-04 atualizado.
+Cada commit de tarefa passou isoladamente em TypeScript, lint e testes (1, 7, 15, 18, 18 e 21 testes).
+
+## Revisão
+
+- [x] Gabriel conferiu o plano, D-26 a D-33 e CA-04 atualizado (10/10/2026, depois da implementação).
+- [ ] Maycon, Danilo e Gilberto conferiram D-26 a D-33 e CA-04 atualizado.
 - [x] Revisão técnica delegada do teste dos três dedos registrada como Codex, sem assinaturas humanas.
-- [ ] Clone limpo rodado por integrante que não conduziu a sessão.
+- [x] Clone limpo rodado por integrante que não conduziu a sessão de implementação: Gabriel, commit `8e4b88b` (ver `docs/entrega/VALIDACAO-OUTRO-INTEGRANTE.md`).
 - [x] Comparação das medições corrigida.
 - [ ] Evidências novas do Claude Code completadas.

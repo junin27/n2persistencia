@@ -5,6 +5,7 @@ Projeto: Deploy Sexta Automation. Versão local: roteiro -> imagens de texto -> 
 - Instalar: `npm ci` (internet na primeira instalação para baixar dependências e FFmpeg).
 - Rodar: `npm run dev` e abrir http://localhost:3000.
 - Build: `npm run build`; produção: `npm start`.
+- Porta 3000 ocupada (erro EADDRINUSE): `npm run dev -- -p 3002` ou `npm start -- -p 3002`.
 - Testar: `npm test -- --runInBand`; inclui geração de vídeo real, não exige FFmpeg global.
 - No PowerShell, use `npm.cmd test -- --runInBand` para preservar os argumentos do Jest.
 - Lint: `npm run lint`.
