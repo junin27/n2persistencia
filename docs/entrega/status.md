@@ -10,8 +10,9 @@
 
 ## Falta para a entrega
 
-- [ ] Equipe confirmar a mudança de escopo local (D-26 a D-33): Gabriel aprovou em 10/10 (D-34); Maycon, Danilo e Gilberto pendentes. Aceitação do professor para substituir serviços externos não está comprovada.
-- [ ] Completar deny do .env no projeto e saída de lint acionado pelo hook numa sessão real do Claude Code. Ver `../harness/COMO-REGISTRAR-PROVAS.md`.
+- [x] Equipe confirmar a mudança de escopo local (D-26 a D-33): Gabriel aprovou (D-34); Maycon, Danilo e Gilberto conforme informado por Gabriel (D-35). Aceitação do professor para substituir serviços externos não está comprovada.
+- [x] Deny do .env provado no projeto (Read e Bash recusados pelo harness, 10/10). Ver `../harness/evidencias.md`.
+- [x] Hook: Write disparou o ESLint e o resultado chegou ao agente (10/10), depois do reparo em `scripts/post-edit.mjs`. Ver `../harness/evidencias.md`.
 - [x] Publicar no GitHub: Gabriel fez nove commits por tarefa (`6dcf0dc` a `8e4b88b`) e o commit de fechamento com a validação.
 - [x] Outro integrante validar clone novo e preencher `VALIDACAO-OUTRO-INTEGRANTE.md` (Gabriel, 10/10).
 - [x] Documentar uma fonte pública relacionada à dor em `EVIDENCIA-DO-PROBLEMA.md`, com limites explícitos; entrevista com o público específico ainda não realizada.

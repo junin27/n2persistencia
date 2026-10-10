@@ -1,6 +1,6 @@
 # Plano da feature 001 - versão local
 
-Preparado antes do código de domínio em 10/10/2026; atualizado após revisão para incluir D-33. O usuário recebeu a proposta de roteiro -> imagens de texto -> MP4 real e autorizou continuar. Gabriel revisou e aprovou este plano e D-26 a D-33 em 10/10/2026, depois da implementação (D-34 da spec); Maycon, Danilo e Gilberto ainda não confirmaram.
+Preparado antes do código de domínio em 10/10/2026; atualizado após revisão para incluir D-33. O usuário recebeu a proposta de roteiro -> imagens de texto -> MP4 real e autorizou continuar. Gabriel revisou e aprovou este plano e D-26 a D-33 em 10/10/2026, depois da implementação (D-34 da spec); Maycon, Danilo e Gilberto aprovaram conforme informado por Gabriel (D-35).
 
 ## Escopo e prova
 
@@ -37,7 +37,7 @@ Cada commit de tarefa passou isoladamente em TypeScript, lint e testes (1, 7, 15
 ## Revisão
 
 - [x] Gabriel conferiu o plano, D-26 a D-33 e CA-04 atualizado (10/10/2026, depois da implementação).
-- [ ] Maycon, Danilo e Gilberto conferiram D-26 a D-33 e CA-04 atualizado.
+- [x] Maycon, Danilo e Gilberto aprovaram D-26 a D-33 e CA-04 atualizado, conforme informado por Gabriel em 10/10/2026 (D-35 da spec).
 - [x] Revisão técnica delegada do teste dos três dedos registrada como Codex, sem assinaturas humanas.
 - [x] Clone limpo rodado por integrante que não conduziu a sessão de implementação: Gabriel, commit `8e4b88b` (ver `docs/entrega/VALIDACAO-OUTRO-INTEGRANTE.md`).
 - [x] Comparação das medições corrigida.

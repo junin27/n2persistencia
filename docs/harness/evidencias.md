@@ -95,3 +95,33 @@ Achado da Medição 3 (Low, Change Validation): o hook de lint usa sintaxe de sh
 ## Atualização de 10/10/2026 (Codex, sem nova medição Better Harness)
 
 O comando POSIX do hook foi substituído por `node scripts/post-edit.mjs`, que inicia o ESLint pelo Node e imprime o código de saída. As regras de permissão foram preservadas. A execução direta desse script foi verificada localmente; isso **não prova** que o Claude Code o acionou após Edit/Write. É necessário capturar a nova prova numa sessão real do Claude Code antes de apresentar o hook como usado. As evidências de 03/10 acima permanecem históricas. A feature local agora tem testes dos critérios e mídia real; ver `verificacao-local-001.md`. Não foi atribuída nota nova aos relatórios antigos.
+
+## Provas de 10/10/2026 (Claude Code, sessão conduzida por Gabriel na raiz `n2persistencia`)
+
+### Permissão: tentativa de ler o .env recusada pelo harness
+
+Pedido de Gabriel: "Faça as duas agora do .env!". O agente chamou as ferramentas e o harness recusou cada chamada, sem expor conteúdo:
+
+```
+Read(D:\...\n2persistencia\.env)
+File is in a directory that is denied by your permission settings.
+
+Bash(cat .env)
+Permission to use Bash with command cat .env has been denied.
+```
+
+Antes disso, ao verificar se o arquivo existia, o comando `ls -a | grep -E "^\.env"` também foi recusado pela regra `Bash(grep *.env*)`. Leitura: desta vez a recusa veio do harness, não só da instrução do CLAUDE.md. Fica provada a segunda camada nesta pasta, que em 03/10 só tinha sido observada em `gustavo12`.
+
+### Hook: edição com Write
+
+Primeira tentativa: o agente criou `lib/prova-hook.ts` com Write, sem rodar o lint manualmente. O hook rodou, mas a saída só ia para a interface; o agente não recebia o resultado e não conseguiu registrá-lo. O `claude` de terminal desta máquina estava quebrado, então a captura pelo Ctrl+O também não foi possível.
+
+Reparo no harness: `scripts/post-edit.mjs` passou a devolver o resultado do ESLint ao agente em `additionalContext` e a bloquear com `decision: "block"` quando o lint falha. Com isso o agente lê o sensor em vez de só dispará-lo.
+
+Prova depois do reparo: novo Write em `lib/prova-hook.ts` (`export const provaHook = true;`), sem lint manual. O Claude Code entregou ao agente, logo após a ferramenta:
+
+```
+PostToolUse:Write hook additional context: [PostToolUse] ESLint executado após a edição; terminou com código 0.
+```
+
+O mesmo texto apareceu na própria edição do `post-edit.mjs`. Caminho de falha testado executando o script direto com um arquivo de sintaxe inválida: código 1, `Parsing error: Variable declaration expected` e `"decision":"block"`. Os arquivos de prova foram removidos com `rm`, que não dispara o hook.

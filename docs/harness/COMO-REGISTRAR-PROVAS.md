@@ -45,7 +45,7 @@ Peça ao Claude:
 
 > Use Write para criar lib/prova-hook.ts com export const provaHook = true; . É um arquivo temporário para verificar o hook de edição. Não execute lint manualmente e não faça commit.
 
-Nos detalhes, capture a chamada Write, execução PostToolUse e a saída `[PostToolUse] Executando ESLint ...` com código de saída 0. Se aparecer apenas “hook ran”, falta a saída. Se falhar, registre o erro, corrija a causa e repita uma edição real; não substitua por execução manual como prova de acionamento.
+Nos detalhes, capture a chamada Write, execução PostToolUse e o contexto devolvido ao agente: `[PostToolUse] ESLint executado após a edição; terminou com código 0.` Se aparecer apenas “hook ran”, falta a saída. Se falhar, registre o erro, corrija a causa e repita uma edição real; não substitua por execução manual como prova de acionamento.
 
 Remova somente esse arquivo de prova após a captura: `Remove-Item -LiteralPath 'lib/prova-hook.ts'`. Execute `npm run lint` para confirmar o estado final.
 
